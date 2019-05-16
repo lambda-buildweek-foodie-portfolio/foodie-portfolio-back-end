@@ -11,6 +11,7 @@ const knexConfig = {
 
 const db = knex(knexConfig);
 
+// GET all recipe
 router.get('/', (req, res) => {
   db('recipe')
     .then(portfolio => {
@@ -18,23 +19,73 @@ router.get('/', (req, res) => {
     })
     .catch(err => {
       console.log(err);
+      res.status(500).json(err);
     });
 });
 
+// GET recipe by ID
 router.get('/:id', (req, res) => {
-  res.send('GET recipe by id');
+  db('recipe')
+    .where({ id: req.params.id })
+    .first()
+    .then(recipe => {
+      if (recipe) {
+        res.status(200).json(recipe);
+      } else {
+        res.status(404).json({ message: 'Recipe not found' });
+      }
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 });
 
+// POST recipe
 router.post('/', (req, res) => {
-  res.send('ADD a recipe');
+  db('recipe')
+    .insert(req.body, ['id', 'title'])
+    .then(results => {
+      res.status(200).json(results);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 });
 
+// EDIT recipe
 router.put('/:id', (req, res) => {
-  res.send('MODIFY a recipe');
+  db('recipe')
+    .where({ id: req.params.id })
+    .update(req.body)
+    .then(count => {
+      if (count > 0) {
+        res.status(200).json({ message: `${count} recipe updated` });
+      } else {
+        res.status(404).json({ message: 'Recipe does not exist' });
+      }
+    })
+    .catch(err => {
+      err => {
+        res.status(500).json(err);
+      }
+    });
 });
 
+// DELETE recipe
 router.delete('/:id', (req, res) => {
-  res.send('REMOVE a recipe');
+  db('recipe')
+    .where({ id: req.params.id })
+    .delete()
+    .then(count => {
+      if (count > 0) {
+        res.status(200).json({ message: `${count} recipe deleted` });
+      } else {
+        res.status(404).json({ message: 'Recipe does not exist' });
+      }
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;
