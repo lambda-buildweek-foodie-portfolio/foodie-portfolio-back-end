@@ -1,13 +1,13 @@
-const knex = require('knex');
 const router = require('express').Router();
 
-const db = require('../data/dbConfig');
+const Chefs = require('../models/userModel');
 
 // GET all users
 router.get('/', (req, res) => {
-  db('chefs')
-    .then(chefs => {
-      res.status(200).json(chefs);
+  Chefs
+    .find()
+    .then(users => {
+      res.status(200).json(users);
     })
     .catch(err => {
       console.log(err);
@@ -17,12 +17,11 @@ router.get('/', (req, res) => {
 
 // GET user by ID
 router.get('/:id', (req, res) => {
-  db('chefs')
-    .where({ id: req.params.id })
-    .first()
-    .then(chef => {
-      if (chef) {
-        res.status(200).json(chef);
+  Chefs
+    .findById(req.params.id)
+    .then(user => {
+      if (user) {
+        res.status(200).json(user);
       } else {
         res.status(404).json({ message: 'User not found' });
       }
@@ -34,10 +33,10 @@ router.get('/:id', (req, res) => {
 
 // POST user
 router.post('/', (req, res) => {
-  db('chefs')
-    .insert(req.body, ['id', 'username'])
-    .then(result => {
-      res.status(200).json(result);
+  Chefs
+    .add(req.body)
+    .then(results => {
+      res.status(200).json(results);
     })
     .catch(err => {
       res.status(500).json(err);
@@ -46,12 +45,11 @@ router.post('/', (req, res) => {
 
 // EDIT user
 router.put('/:id', (req, res) => {
-  db('chefs')
-    .where({ id: req.params.id })
-    .update(req.body)
-    .then(count => {
-      if (count > 0) {
-        res.status(200).json({ message: `${count} user(s) updated` });
+  Chefs
+    .update(req.params.id, req.body)
+    .then(updated => {
+      if (updated) {
+        res.status(200).json(updated);
       } else {
         res.status(404).json({ message: 'User does not exist' });
       }
@@ -65,12 +63,11 @@ router.put('/:id', (req, res) => {
 
 // DELETE user
 router.delete('/:id', (req, res) => {
-  db('chefs')
-    .where({ id: req.params.id })
-    .delete()
-    .then(count => {
-      if (count > 0) {
-        res.status(200).json({ message: `${count} user(s) deleted` });
+  Chefs
+    .remove(req.params.id)
+    .then(removed => {
+      if (removed) {
+        res.status(200).json(removed);
       } else {
         res.status(404).json({ message: 'User does not exist' });
       }
