@@ -37,12 +37,13 @@ router.post('/register', (req, res) => {
 // LOG IN user
 router.post('/login', (req, res) => {
   let { username, password } = req.body;
+
   Chefs
     .findBy({ username })
     .first()
     .then(user => {
-      if (user) {
-        res.status(200).json({ message: `${user.username} successfully logged in` });
+      if (user && bcrypt.compareSync(password, user.password)) {
+        res.status(200).json({ message: `${user.username} has successfully logged in` });
       } else {
         res.status(401).json({ message: 'Invalid credentials' });
       }
