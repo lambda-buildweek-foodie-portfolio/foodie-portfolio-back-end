@@ -1,15 +1,7 @@
 const knex = require('knex');
 const router = require('express').Router();
 
-const knexConfig = {
-  client: 'sqlite3',
-  connection: {
-    filename: './data/portfolio.db3'
-  },
-  useNullAsDefault: true
-}
-
-const db = knex(knexConfig);
+const db = require('../data/dbConfig');
 
 // GET all recipe
 router.get('/', (req, res) => {
