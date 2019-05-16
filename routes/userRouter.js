@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const bcrypt = require('bcryptjs');
 
 const Chefs = require('../models/userModel');
 
@@ -15,61 +16,35 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET user by ID
-router.get('/:id', (req, res) => {
+// CREATE user
+router.post('/register', (req, res) => {
+  let user = req.body;
+
+  const hash = bcrypt.hashSync(user.password, 10);
+
+  user.password = hash;
+
   Chefs
-    .findById(req.params.id)
+    .add(user)
+    .then(saved => {
+      res.status(200).json(saved);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+// LOG IN user
+router.post('/login', (req, res) => {
+  let { username, password } = req.body;
+  Chefs
+    .findBy({ username })
+    .first()
     .then(user => {
       if (user) {
-        res.status(200).json(user);
+        res.status(200).json({ message: `${user.username} successfully logged in` });
       } else {
-        res.status(404).json({ message: 'User not found' });
-      }
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
-});
-
-// POST user
-router.post('/', (req, res) => {
-  Chefs
-    .add(req.body)
-    .then(results => {
-      res.status(200).json(results);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
-});
-
-// EDIT user
-router.put('/:id', (req, res) => {
-  Chefs
-    .update(req.params.id, req.body)
-    .then(updated => {
-      if (updated) {
-        res.status(200).json(updated);
-      } else {
-        res.status(404).json({ message: 'User does not exist' });
-      }
-    })
-    .catch(err => {
-      err => {
-        res.status(500).json(err);
-      }
-    });
-});
-
-// DELETE user
-router.delete('/:id', (req, res) => {
-  Chefs
-    .remove(req.params.id)
-    .then(removed => {
-      if (removed) {
-        res.status(200).json(removed);
-      } else {
-        res.status(404).json({ message: 'User does not exist' });
+        res.status(401).json({ message: 'Invalid credentials' });
       }
     })
     .catch(err => {

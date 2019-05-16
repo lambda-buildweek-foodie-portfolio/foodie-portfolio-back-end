@@ -2,14 +2,19 @@ const db = require('../data/dbConfig');
 
 module.exports = {
   find,
+  findBy,
   findById,
-  add,
-  update,
-  remove
+  add
 };
 
 function find() {
-  return db('chefs');
+  return db('chefs')
+    .select('id', 'username', 'password');
+}
+
+function findBy(filter) {
+  return db('chefs')
+    .where(filter);
 }
 
 function findById(id) {
@@ -18,29 +23,10 @@ function findById(id) {
     .first();
 }
 
-function add(recipe) {
+function add(user) {
   return db('chefs')
-    .insert(recipe, 'id')
+    .insert(user, 'id')
     .then(([id]) => {
       return findById(id);
     });
-}
-
-function update(id, changes) {
-  return db('chefs')
-    .where({ id })
-    .update(changes)
-    .then(count => {
-      if (count > 0) {
-        return findById(id);
-      } else {
-        return null;
-      }
-    });
-}
-
-function remove(id) {
-  return db('chefs')
-    .where({ id })
-    .del();
 }
