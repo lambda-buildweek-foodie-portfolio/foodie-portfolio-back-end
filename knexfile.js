@@ -7,10 +7,13 @@ module.exports = {
     connection: {
       filename: './data/portfolio.db3'
     },
-    useNullAsDefault: true,
     migrations: {
       directory: './data/migrations'
-    }
+    },
+    seeds: {
+      directory: './data/seeds'
+    },
+    useNullAsDefault: true
   },
 
   staging: {
@@ -30,19 +33,15 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
     migrations: {
-      tableName: 'knex_migrations'
-    }
+      directory: './data/migrations'
+    },
+    seeds: {
+      directory: './db/seeds'
+    },
+    useNullAsDefault: true
   }
 
 };
