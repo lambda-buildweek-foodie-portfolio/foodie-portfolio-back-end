@@ -14,4 +14,8 @@ server.use(helmet());
 server.use('/recipe', postRouter);
 server.use('/users', userRouter);
 
+server.use('/', (req, res) => {
+  res.status(200).json({ hello: 'World!' });
+});
+
 module.exports = server;
