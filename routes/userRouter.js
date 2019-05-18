@@ -3,11 +3,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const Chefs = require('../models/userModel');
-
+const restricted = require('../auth/restricted');
 const secret = require('../auth/secrets');
 
 // GET all users
-router.get('/', (req, res) => {
+router.get('/', restricted, (req, res) => {
   Chefs
     .find()
     .then(users => {

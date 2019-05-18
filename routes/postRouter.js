@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const Recipe = require('../models/postModel');
+const restricted = require('../auth/restricted');
 
 // GET all recipe
 router.get('/', (req, res) => {
@@ -32,7 +33,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST recipe
-router.post('/', (req, res) => {
+router.post('/', restricted, (req, res) => {
   Recipe
     .add(req.body)
     .then(results => {
@@ -44,7 +45,7 @@ router.post('/', (req, res) => {
 });
 
 // EDIT recipe
-router.put('/:id', (req, res) => {
+router.put('/:id', restricted, (req, res) => {
   Recipe
     .update(req.params.id, req.body)
     .then(updated => {
@@ -62,7 +63,7 @@ router.put('/:id', (req, res) => {
 });
 
 // DELETE recipe
-router.delete('/:id', (req, res) => {
+router.delete('/:id', restricted, (req, res) => {
   Recipe
     .remove(req.params.id)
     .then(removed => {
