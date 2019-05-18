@@ -1,27 +1,16 @@
-const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-const Chefs = require('../models/userModel');
+const secret = require('../auth/secrets');
 
-function restricted(req, res, next) {
-  const { username, password } = req.headers;
+module.exports = (req, res, next) => {
+  const token = req.headers.authorization;
 
-  if (username && password) {
-    Chefs
-    .findBy({ username })
-    .first()
-    .then(user => {
-      if (user && bcrypt.compareSync(password, user.password)) {
-        next();
-      } else {
-        res.status(401).json({ message: 'Invalid credentials' });
-      }
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
-  } else {
-    res.status(400).json({ message: 'Please provide credentials' });
-  }
+  jwt.verify(token, secret.jwt, (err, decodedToken) => {
+    if (err) {
+      res.status(401).json({ error: 'You are not logged in' });
+    } else {
+      req.decodedToken = decodedToken;
+      next();
+    }
+  });
 };
-
-module.exports = restricted;
