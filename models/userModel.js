@@ -9,7 +9,7 @@ module.exports = {
 
 function find() {
   return db('chefs')
-    .select('id', 'username', 'password');
+    .select('id', 'username', );
 }
 
 function findBy(filter) {

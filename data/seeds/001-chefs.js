@@ -9,34 +9,22 @@ exports.seed = function(knex, Promise) {
         {
           username: 'jasonh',
           password: 'holloway',
-          location: 'WEBPT4',
-          email: 'jason@holloway.com',
-          firstName: 'Jason',
-          lastName: 'Holloway'
+          location: 'WEBPT4'
         },
         {
           username: 'jabrilb',
           password: 'breckenridge',
-          location: 'WEBPT5',
-          email: 'jabril@breckenridge.com',
-          firstName: 'Jabril',
-          lastName: 'Breckenridge'
+          location: 'WEBPT5'
         },
         {
           username: 'scottg',
           password: 'grobe',
-          location: 'WEBPT4',
-          email: 'scott@grobe.com',
-          firstName: 'Scott',
-          lastName: 'Grobe'
+          location: 'WEBPT4'
         },
         {
           username: 'terriek',
           password: 'kim',
-          location: 'SS',
-          email: 'terrie@kim.com',
-          firstName: 'Terrie',
-          lastName: 'Kim'
+          location: 'SS'
         },
       ]);
     });

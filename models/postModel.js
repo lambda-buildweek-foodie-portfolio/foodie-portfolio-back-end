@@ -14,7 +14,7 @@ function find() {
 
 function findById(id) {
   return db('recipe')
-    .where({ id })
+    .where({ user_id: id })
     .first();
 }
 
