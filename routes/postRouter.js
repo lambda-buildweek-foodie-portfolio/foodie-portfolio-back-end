@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json(err);
+      res.status(500).json({ message: 'We had a problem with our server. Try again later.' });
     });
 });
 
@@ -24,11 +24,11 @@ router.get('/:id', (req, res) => {
       if (recipe) {
         res.status(200).json(recipe);
       } else {
-        res.status(404).json({ message: 'Recipe not found' });
+        res.status(404).json({ message: 'The specified recipe could not be found.' });
       }
     })
     .catch(err => {
-      res.status(500).json(err);
+      res.status(500).json({ message: 'We had a problem with our server. Try again later.' });
     });
 });
 
@@ -40,7 +40,7 @@ router.post('/', restricted, (req, res) => {
       res.status(200).json(results);
     })
     .catch(err => {
-      res.status(500).json(err);
+      res.status(500).json({ message: 'We had a problem with our server. Try again later.' });
     });
 });
 
@@ -52,12 +52,12 @@ router.put('/:id', restricted, (req, res) => {
       if (updated) {
         res.status(200).json(updated);
       } else {
-        res.status(404).json({ message: 'Recipe does not exist' });
+        res.status(404).json({ message: 'The specified recipe could not be found.' });
       }
     })
     .catch(err => {
       err => {
-        res.status(500).json(err);
+        res.status(500).json({ message: 'We had a problem with our server. Try again later.' });
       }
     });
 });
@@ -70,11 +70,11 @@ router.delete('/:id', restricted, (req, res) => {
       if (removed) {
         res.status(200).json(removed);
       } else {
-        res.status(404).json({ message: 'Recipe does not exist' });
+        res.status(404).json({ message: 'The specified recipe could not be found.' });
       }
     })
     .catch(err => {
-      res.status(500).json(err);
+      res.status(500).json({ message: 'We had a problem with our server. Try again later.' });
     });
 });
 

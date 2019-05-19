@@ -15,7 +15,7 @@ router.get('/', restricted, (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json(err);
+      res.status(500).json({ message: 'We had a problem with our server. Try again later.' });
     });
 });
 
@@ -33,7 +33,7 @@ router.post('/register', (req, res) => {
       res.status(200).json(saved);
     })
     .catch(err => {
-      res.status(500).json(err);
+      res.status(500).json({ message: 'We had a problem with our server. Try again later.' });
     });
 });
 
@@ -56,7 +56,7 @@ router.post('/login', (req, res) => {
       }
     })
     .catch(err => {
-      res.status(500).json(err);
+      res.status(500).json({ message: 'We had a problem with our server. Try again later.' });
     });
 });
 
