@@ -8,14 +8,6 @@ exports.up = function(knex, Promise) {
       tbl.text('ingredients').notNullable();
       tbl.text('instructions').notNullable();
       tbl.string('image');
-      tbl
-        .integer('user_id')
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('chefs')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
     });
 };
 
